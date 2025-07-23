@@ -41,7 +41,7 @@ export default function Footer() {
       {/* Sağ menü */}
       <nav className="absolute right-4 top-0 h-full flex items-center gap-4 px-6 text-white">
         <Link
-          href="#contact"
+          href="/contact"
           className="text-white hover:text-gray-300 transition-colors"
         >
           Contact

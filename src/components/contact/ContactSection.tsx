@@ -1,0 +1,95 @@
+"use client";
+
+import { Mail } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import dynamic from "next/dynamic";
+
+const LeafletMap = dynamic(() => import("@/components/LeafletMap"), {
+  ssr: false,
+});
+
+export default function ContactSection() {
+  const address = `Kirazpınar, DPÜ Evliya Çelebi Yerleşkesi, Kütahya Tavşanlı Yolu 10. km
+43000 Kütahya Merkez/Kütahya`;
+
+  const lat = 39.48111268702931;
+  const lng = 29.899136814730053;
+
+  return (
+    <section
+      id="contact"
+      className="bg-club-white text-club-black py-16 min-h-[calc(100vh-80px)]"
+    >
+      {/* Hero görsel */}
+      <div className="relative w-screen h-[60vh] mb-16">
+        <Image
+          src="/uzay.jpg"
+          alt="Contact Background"
+          fill
+          className="object-cover"
+        />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div>
+            <h1 className="text-5xl font-bold text-white">Contact</h1>
+          </div>
+        </div>
+      </div>
+
+      {/* İçerik */}
+      <section>
+        <div className="mx-auto max-w-[1200px] px-8">
+          <div className="grid gap-12 md:grid-cols-2 items-start">
+            {/* Sol taraf */}
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-semibold mb-2">E-posta</h2>
+                <Link
+                  href="mailto:info@kuasar-uav.com"
+                  className="inline-flex items-center gap-2 text-lg hover:text-club-red transition-colors"
+                >
+                  <Mail size={20} />
+                  info@kuasar-uav.com
+                </Link>
+              </div>
+              <div>
+                <h2 className="text-2xl font-semibold mb-2">Telefon</h2>
+                <Link
+                  href="tel:+90 (274) 443 43 43"
+                  className="text-lg hover:text-club-red transition-colors"
+                >
+                  +90 (274) 443 43 43
+                </Link>
+              </div>
+              <div>
+                <h2 className="text-2xl font-semibold mb-2">Adres</h2>
+                <p className="leading-relaxed whitespace-pre-line">{address}</p>
+              </div>
+            </div>
+
+            {/* Sağ taraf: Leaflet Map */}
+            <div className="w-full h-[350px] rounded-lg overflow-hidden border border-club-black/10">
+              <LeafletMap
+                lat={lat}
+                lng={lng}
+                popup={address.replace(/\n/g, "<br/>")}
+              />
+            </div>
+          </div>
+
+          {/* Haritalarda aç linki */}
+          <div className="mt-4 text-sm">
+            <a
+              href={`https://maps.google.com/?q=${encodeURIComponent(address)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline"
+            >
+              Haritalarda Aç
+            </a>
+          </div>
+        </div>
+      </section>
+    </section>
+  );
+}
