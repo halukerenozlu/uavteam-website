@@ -47,7 +47,7 @@ export default function Footer() {
           Contact
         </Link>
         <Link
-          href="https://instagram.com/yourclub"
+          href="https://instagram.com/kuasarinsis"
           target="_blank"
           rel="noopener noreferrer"
           className="p-2 rounded-full text-white hover:bg-gray-800 transition-colors"

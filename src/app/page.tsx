@@ -137,12 +137,83 @@ export default function HomePage() {
           </div>
         </section>
         <div className="h-[45px]"></div>
+        {/* Competitions Section */}
+        <section id="competitions" className="bg-white text-black py-16">
+          <div className="container">
+            <div className="w-full px-8">
+              <div className="w-full grid md:grid-cols-2 gap-36 items-center">
+                {/* Left: Carousel */}
+                <div className="w-full flex justify-center">
+                  <Carousel className="w-full max-w-xs">
+                    <CarouselContent>
+                      {Array.from({ length: 5 }).map((_, index) => (
+                        <CarouselItem key={index}>
+                          <div className="p-1">
+                            <Card>
+                              <CardContent className="flex aspect-square items-center justify-center p-2">
+                                <Image
+                                  src="/nokta.png"
+                                  alt={`Competition ${index + 1}`}
+                                  width={300}
+                                  height={300}
+                                  className="rounded-lg object-cover w-full h-full"
+                                />
+                              </CardContent>
+                            </Card>
+                          </div>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious />
+                    <CarouselNext />
+                  </Carousel>
+                </div>
+                {/* Right: Text content */}
+                <div className="space-y-6 flex flex-col items-center justify-center h-full">
+                  <div className="w-full flex flex-col items-center">
+                    <h2 className="text-4xl font-bold text-black mb-4">
+                      Competitions
+                    </h2>
+                    <br />
+                    <div className="w-32 h-1 bg-red-500 mb-6"></div>
+                    <br />
+                    <p className="text-black text-lg leading-relaxed text-center">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Sed do eiusmod tempor incididunt ut labore et dolore magna
+                      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                      ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </p>
+                    <div className="h-[40px]" />
+                  </div>
+                  <div className="flex justify-center mt-8">
+                    <Button
+                      variant="default"
+                      size="lg"
+                      className="bg-black text-white hover:bg-gray-800"
+                    >
+                      Learn More
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div className="h-[45px]"></div>
         {/* Sponsors Section */}
         <section id="sponsors" className="bg-white text-black py-16">
           <div className="container">
             <div className="w-full px-8">
-              <div className="grid md:grid-cols-2 gap-48 items-center">
-                {/* Sol taraf - Carousel */}
+              <div className="grid md:grid-cols-2 gap-42 items-center">
+                {/* Left Column - Text Content */}
+                <div className="w-full flex flex-col items-center">
+                  <h2 className="text-4xl font-bold text-black">
+                    Our Sponsors
+                  </h2>
+                  <br />
+                  <div className="w-32 h-1 bg-red-500 mb-6"></div>
+                </div>
+                {/* Right Column - Carousel */}
                 <div className="w-full flex justify-center">
                   <Carousel className="w-full max-w-xs">
                     <CarouselContent>
@@ -170,15 +241,6 @@ export default function HomePage() {
                     <CarouselPrevious />
                     <CarouselNext />
                   </Carousel>
-                </div>
-
-                {/* Sağ taraf - İçerik */}
-                <div className="w-full flex flex-col items-center">
-                  <h2 className="text-4xl font-bold text-black">
-                    Our Sponsors
-                  </h2>
-                  <br />
-                  <div className="w-32 h-1 bg-red-500 mb-6"></div>
                 </div>
               </div>
             </div>

@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Kuasar UAV Team",
-  description: "Üniversite insansız hava araçları kulübü tanıtım sitesi",
+  description: "İnsansız hava araçları kulübü tanıtım sitesi",
 };
 
 export default function RootLayout({

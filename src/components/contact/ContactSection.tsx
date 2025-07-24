@@ -27,19 +27,17 @@ export default function ContactSection() {
           src="/uzay.jpg"
           alt="Contact Background"
           fill
-          className="object-cover"
+          className="object-cover "
         />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div>
-            <h1 className="text-5xl font-bold text-white">Contact</h1>
-          </div>
+        <div className="absolute inset-0 flex items-center justify-center  ">
+          <h1 className=" text-5xl font-bold text-white">Contact</h1>
         </div>
       </div>
 
       {/* İçerik */}
       <section>
         <div className="mx-auto max-w-[1200px] px-8">
-          <div className="grid gap-12 md:grid-cols-2 items-start">
+          <div className="grid gap-72 md:grid-cols-2 items-start">
             {/* Sol taraf */}
             <div className="space-y-6">
               <div>
@@ -55,7 +53,7 @@ export default function ContactSection() {
               <div>
                 <h2 className="text-2xl font-semibold mb-2">Telefon</h2>
                 <Link
-                  href="tel:+90 (274) 443 43 43"
+                  href="tel:+902744434343"
                   className="text-lg hover:text-club-red transition-colors"
                 >
                   +90 (274) 443 43 43
@@ -78,7 +76,7 @@ export default function ContactSection() {
           </div>
 
           {/* Haritalarda aç linki */}
-          <div className="mt-4 text-sm">
+          <div className="mt-4 text-sm text-right">
             <a
               href={`https://maps.google.com/?q=${encodeURIComponent(address)}`}
               target="_blank"
