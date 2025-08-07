@@ -20,7 +20,7 @@ export default function Footer() {
           Team
         </Link>
         <Link
-          href="#vehicles"
+          href="/vehicles"
           className="text-white hover:text-gray-300 transition-colors"
         >
           Vehicles

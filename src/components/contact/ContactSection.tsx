@@ -2,7 +2,6 @@
 
 import { Mail } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
 import dynamic from "next/dynamic";
 
 const LeafletMap = dynamic(() => import("@/components/LeafletMap"), {
@@ -21,22 +20,10 @@ export default function ContactSection() {
       id="contact"
       className="bg-club-white text-club-black py-16 min-h-[calc(100vh-80px)]"
     >
-      {/* Hero görsel */}
-      <div className="relative w-screen h-[60vh] mb-16">
-        <Image
-          src="/uzay.jpg"
-          alt="Contact Background"
-          fill
-          className="object-cover "
-        />
-        <div className="absolute inset-0 flex items-center justify-center  ">
-          <h1 className=" text-5xl font-bold text-white">Contact</h1>
-        </div>
-      </div>
-
       {/* İçerik */}
       <section>
-        <div className="mx-auto max-w-[1200px] px-8">
+        <div className="h-[20px]" />
+        <div className="container mx-auto px-8">
           <div className="grid gap-72 md:grid-cols-2 items-start">
             {/* Sol taraf */}
             <div className="space-y-6">
@@ -66,7 +53,7 @@ export default function ContactSection() {
             </div>
 
             {/* Sağ taraf: Leaflet Map */}
-            <div className="w-full h-[350px] rounded-lg overflow-hidden border border-club-black/10">
+            <div className="w-full h-[350px] rounded-lg overflow-hidden border border-club-black/10 content-end">
               <LeafletMap
                 lat={lat}
                 lng={lng}
@@ -87,6 +74,7 @@ export default function ContactSection() {
             </a>
           </div>
         </div>
+        <div className="h-[20px]" />
       </section>
     </section>
   );

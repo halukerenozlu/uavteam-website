@@ -2,6 +2,7 @@
 
 import Hero from "@/components/hero/Hero";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -96,13 +97,15 @@ export default function HomePage() {
                     <div className="h-[40px]" />
                   </div>
                   <div className="flex justify-center  mt-8">
-                    <Button
-                      variant="default"
-                      size="lg"
-                      className="bg-black text-white hover:bg-gray-800 "
-                    >
-                      Learn More
-                    </Button>
+                    <Link href="/vehicles" className="flex justify-center mt-8">
+                      <Button
+                        variant="default"
+                        size="lg"
+                        className="bg-black text-white hover:bg-gray-800"
+                      >
+                        Learn More
+                      </Button>
+                    </Link>
                   </div>
                 </div>
 
@@ -137,6 +140,7 @@ export default function HomePage() {
           </div>
         </section>
         <div className="h-[45px]"></div>
+
         {/* Competitions Section */}
         <section id="competitions" className="bg-white text-black py-16">
           <div className="container">
@@ -200,6 +204,7 @@ export default function HomePage() {
           </div>
         </section>
         <div className="h-[45px]"></div>
+
         {/* Sponsors Section */}
         <section id="sponsors" className="bg-white text-black py-16">
           <div className="container">
@@ -246,6 +251,7 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+
         <div className="h-[45px]"></div>
       </main>
     </>

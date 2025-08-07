@@ -44,7 +44,7 @@ export default function Header() {
           Team
         </Link>
         <Link
-          href="#vehicles"
+          href="/vehicles"
           className="text-white hover:text-gray-300 transition-colors"
         >
           Vehicles
