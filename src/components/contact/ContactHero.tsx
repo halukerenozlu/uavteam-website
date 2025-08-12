@@ -4,7 +4,7 @@ export default function ContactHero() {
   return (
     <div className="relative w-screen h-[60vh] mb-16">
       <Image
-        src="/uzay.jpg"
+        src="/contact.jpg"
         alt="Contact Background"
         fill
         className="object-cover"

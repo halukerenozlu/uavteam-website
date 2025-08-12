@@ -16,19 +16,18 @@ export default function ContactSection() {
   const lng = 29.899136814730053;
 
   return (
-    <section
-      id="contact"
-      className="bg-club-white text-club-black py-16 min-h-[calc(100vh-80px)]"
-    >
+    <section id="contact" className="bg-club-white text-club-black py-16  ">
       {/* İçerik */}
       <section>
-        <div className="h-[20px]" />
-        <div className="container mx-auto px-8">
+        <div className="h-[50px]" />
+        <div className="w-full flex justify-center">
           <div className="grid gap-72 md:grid-cols-2 items-start">
             {/* Sol taraf */}
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-semibold mb-2">E-posta</h2>
+                <div className="w-24 h-1 bg-red-500 mb-6 mx-auto"></div>
+
                 <Link
                   href="mailto:info@kuasar-uav.com"
                   className="inline-flex items-center gap-2 text-lg hover:text-club-red transition-colors"
@@ -37,8 +36,10 @@ export default function ContactSection() {
                   info@kuasar-uav.com
                 </Link>
               </div>
+              <div className="h-[20px]" />
               <div>
                 <h2 className="text-2xl font-semibold mb-2">Telefon</h2>
+                <div className="w-24 h-1 bg-red-500 mb-6 mx-auto"></div>
                 <Link
                   href="tel:+902744434343"
                   className="text-lg hover:text-club-red transition-colors"
@@ -46,8 +47,10 @@ export default function ContactSection() {
                   +90 (274) 443 43 43
                 </Link>
               </div>
+              <div className="h-[20px]" />
               <div>
                 <h2 className="text-2xl font-semibold mb-2">Adres</h2>
+                <div className="w-24 h-1 bg-red-500 mb-6 mx-auto"></div>
                 <p className="leading-relaxed whitespace-pre-line">{address}</p>
               </div>
             </div>
@@ -61,20 +64,18 @@ export default function ContactSection() {
               />
             </div>
           </div>
-
-          {/* Haritalarda aç linki */}
-          <div className="mt-4 text-sm text-right">
-            <a
-              href={`https://maps.google.com/?q=${encodeURIComponent(address)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline"
-            >
-              Haritalarda Aç
-            </a>
-          </div>
         </div>
-        <div className="h-[20px]" />
+        <div className="mt-4 text-sm text-right !px-36">
+          <a
+            href={`https://maps.google.com/?q=${encodeURIComponent(address)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline "
+          >
+            Google Haritalarda Aç
+          </a>
+        </div>
+        <div className="h-[50px]" />
       </section>
     </section>
   );

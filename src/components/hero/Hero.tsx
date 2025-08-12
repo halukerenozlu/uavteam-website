@@ -61,6 +61,7 @@ export default function Hero({
         <h1 className="text-4xl sm:text-6xl font-bold mb-4 text-white">
           {title}
         </h1>
+        <div className="h-[20px]" />
         <p className="max-w-2xl text-lg sm:text-xl text-white">{subtitle}</p>
       </div>
     </section>

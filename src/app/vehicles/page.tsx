@@ -7,7 +7,7 @@ export default function VehiclesPage() {
   return (
     <>
       <VehiclesHero />
-      <main className="bg-white pt-10 pb-10">
+      <main className="bg-white pt-10 pb-16">
         <VehiclesSection />
       </main>
     </>

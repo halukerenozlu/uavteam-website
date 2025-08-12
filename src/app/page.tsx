@@ -44,9 +44,9 @@ export default function HomePage() {
                   <h2 className="text-4xl font-bold text-black text-center">
                     About
                   </h2>
-                  <br />
+                  <div className="h-[15px]"></div>
                   <div className="w-32 h-1 bg-red-500 mb-6"></div>
-                  <br />
+                  <div className="h-[25px]"></div>
                   <p className="text-black text-lg leading-relaxed text-center">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
                     do eiusmod tempor incididunt ut labore et dolore magna
@@ -58,20 +58,22 @@ export default function HomePage() {
                   </p>
                   <div className="h-[40px]" />
                   <div className="flex justify-center mt-8">
-                    <Button
-                      variant="default"
-                      size="lg"
-                      className="bg-black text-white hover:bg-gray-800 item"
-                    >
-                      Learn More
-                    </Button>
+                    <Link href="/about" className="flex justify-center mt-8">
+                      <Button
+                        variant="default"
+                        size="lg"
+                        className="bg-black text-white hover:bg-gray-800 item !px-5"
+                      >
+                        Learn More
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
-
+        <div className="h-[25px]"></div>
         {/* Vehicles Section */}
         <section id="vehicles" className="bg-white text-black py-16">
           <div className="container">
@@ -83,9 +85,9 @@ export default function HomePage() {
                     <h2 className="text-4xl font-bold text-black mb-4">
                       Our Vehicles
                     </h2>
-                    <br />
+                    <div className="h-[15px]"></div>
                     <div className="w-32 h-1 bg-red-500 mb-6"></div>
-                    <br />
+                    <div className="h-[25px]"></div>
                     <p className="text-black text-lg leading-relaxed text-center">
                       Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                       Sed do eiusmod tempor incididunt ut labore et dolore magna
@@ -101,7 +103,7 @@ export default function HomePage() {
                       <Button
                         variant="default"
                         size="lg"
-                        className="bg-black text-white hover:bg-gray-800"
+                        className="bg-black text-white hover:bg-gray-800 !px-5"
                       >
                         Learn More
                       </Button>
@@ -178,9 +180,9 @@ export default function HomePage() {
                     <h2 className="text-4xl font-bold text-black mb-4">
                       Competitions
                     </h2>
-                    <br />
+                    <div className="h-[15px]"></div>
                     <div className="w-32 h-1 bg-red-500 mb-6"></div>
-                    <br />
+                    <div className="h-[25px]"></div>
                     <p className="text-black text-lg leading-relaxed text-center">
                       Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                       Sed do eiusmod tempor incididunt ut labore et dolore magna
@@ -193,7 +195,7 @@ export default function HomePage() {
                     <Button
                       variant="default"
                       size="lg"
-                      className="bg-black text-white hover:bg-gray-800"
+                      className="bg-black text-white hover:bg-gray-800 !px-5"
                     >
                       Learn More
                     </Button>
@@ -215,7 +217,7 @@ export default function HomePage() {
                   <h2 className="text-4xl font-bold text-black">
                     Our Sponsors
                   </h2>
-                  <br />
+                  <div className="h-[15px]"></div>
                   <div className="w-32 h-1 bg-red-500 mb-6"></div>
                 </div>
                 {/* Right Column - Carousel */}
@@ -251,7 +253,6 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-
         <div className="h-[45px]"></div>
       </main>
     </>

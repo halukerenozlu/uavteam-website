@@ -8,13 +8,13 @@ export default function Footer() {
 
       <nav className="absolute left-4 top-0 h-full flex items-center gap-6 px-6 text-white">
         <Link
-          href="#about"
+          href="/about"
           className="text-white hover:text-gray-300 transition-colors"
         >
           About
         </Link>
         <Link
-          href="#team"
+          href="/team"
           className="text-white hover:text-gray-300 transition-colors"
         >
           Team
@@ -26,7 +26,7 @@ export default function Footer() {
           Vehicles
         </Link>
         <Link
-          href="#join"
+          href="/team#join"
           className="text-white hover:text-gray-300 transition-colors"
         >
           Join Us
@@ -63,7 +63,7 @@ export default function Footer() {
           <FaLinkedin size={16} />
         </Link>
         <Link
-          href="https://youtube.com/yourclub"
+          href="https://youtube.com/watch?v=OCv-QB3KOWw"
           target="_blank"
           rel="noopener noreferrer"
           className="p-2 rounded-full text-white hover:bg-gray-800 transition-colors"
