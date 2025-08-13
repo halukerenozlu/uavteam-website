@@ -26,6 +26,24 @@ function initials(name: string) {
   return (f + l).toUpperCase();
 }
 
+/**
+ * İsim satırlarını hazırlar:
+ * - En fazla 3 kelime
+ * - Kelime başına max 13 karakter (uzunsa '…')
+ * - İlk kelime 1. satır, kalan(lar) altta (soyisim altta görünür)
+ */
+function formatNameLines(fullName: string): string[] {
+  const words = fullName
+    .trim()
+    .split(/\s+/) // boşluk → yeni kelime
+    .filter(Boolean)
+    .slice(0, 3) // max 3 kelime
+    .map((w) => (w.length > 13 ? w.slice(0, 14) : w)); // kelime başına 13 char
+
+  if (words.length <= 1) return words; // tek kelimeyse tek satır
+  return [words[0], ...words.slice(1)]; // ilk kelime üstte, diğerleri altta
+}
+
 export default function TeamMemberCard({
   member,
   size = "md",
@@ -35,6 +53,8 @@ export default function TeamMemberCard({
   const textAlign =
     align === "left" ? "items-start text-left" : "items-center text-center";
 
+  const nameLines = formatNameLines(member.name);
+
   return (
     <div className={`flex flex-col ${textAlign} gap-3`}>
       <Avatar className={`${dim} border border-black/10 shadow-sm`}>
@@ -42,12 +62,20 @@ export default function TeamMemberCard({
         <AvatarFallback>{initials(member.name)}</AvatarFallback>
       </Avatar>
 
-      {/* Rol → İsim → LinkedIn ikonu */}
+      {/* Rol → İsim (çok satır) → LinkedIn ikonu */}
       <div className="flex flex-col items-center gap-1">
         {member.role && (
           <div className="text-sm text-gray-600">{member.role}</div>
         )}
-        <div className="text-base font-semibold">{member.name}</div>
+
+        {/* İSİM / SOYİSİM ÇOK SATIRLI */}
+        <div className="text-base font-semibold leading-snug">
+          {nameLines.map((line, i) => (
+            <span key={i} className="block">
+              {line}
+            </span>
+          ))}
+        </div>
 
         {member.linkedinUrl && (
           <Link

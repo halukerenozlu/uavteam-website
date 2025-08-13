@@ -41,7 +41,7 @@ export default function TeamSection() {
           <Connector />
 
           {/* 2) Kaptanlar — 2 sütun, ortalanmış */}
-          <div className="grid place-items-center gap-10 md:grid-cols-2">
+          <div className="flex flex-wrap justify-center gap-10 mx-auto md:max-w-[600px]">
             {captains.map((c) => (
               <TeamMemberCard key={c.id} member={c} />
             ))}
@@ -53,11 +53,11 @@ export default function TeamSection() {
           {/* 3) Skuadlar — üç sütun: Mechanical / Avionics / Software */}
           <div className="grid w-full gap-20 md:grid-cols-3">
             {/* Mechanical */}
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center text-center">
               <h4 className="text-xl font-semibold mb-4">Mechanical</h4>
               <div className="h-[30px]" />
               {/* Her satırda max 3 üye, fazlası alt satıra iner */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 place-items-center">
+              <div className="flex flex-wrap justify-center gap-6 w-full mx-auto md:max-w-[528px]">
                 {squads.mechanical.map((m) => (
                   <TeamMemberCard key={m.id} member={m} />
                 ))}
@@ -68,7 +68,7 @@ export default function TeamSection() {
             <div className="flex flex-col items-center">
               <h4 className="text-xl font-semibold mb-4">Avionic</h4>
               <div className="h-[30px]" />
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 place-items-center">
+              <div className="flex flex-wrap justify-center gap-6 w-full mx-auto md:max-w-[528px]">
                 {squads.avionic.map((m) => (
                   <TeamMemberCard key={m.id} member={m} />
                 ))}
@@ -76,10 +76,10 @@ export default function TeamSection() {
             </div>
 
             {/* Software */}
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center text-center">
               <h4 className="text-xl font-semibold mb-4">Software</h4>
               <div className="h-[30px]" />
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 place-items-center">
+              <div className="flex flex-wrap justify-center gap-6 w-full mx-auto md:max-w-[528px]">
                 {squads.software.map((m) => (
                   <TeamMemberCard key={m.id} member={m} />
                 ))}
