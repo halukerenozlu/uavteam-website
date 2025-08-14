@@ -63,6 +63,13 @@ export const teamData: TeamData = {
         imageUrl: null,
         linkedinUrl: "https://www.linkedin.com/",
       },
+      {
+        id: "mech-3",
+        name: "Samet Güllüpaşa",
+        role: "Mechanical",
+        imageUrl: null,
+        linkedinUrl: "https://www.linkedin.com/",
+      },
 
       // 4. kişi eklersen otomatik alt satıra geçer
     ],
