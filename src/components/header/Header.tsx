@@ -2,7 +2,13 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FaInstagram, FaLinkedin, FaYoutube } from "react-icons/fa";
+// 🔽 EKLENDİ: kişi/avatara uygun ikon
+import {
+  FaInstagram,
+  FaLinkedin,
+  FaYoutube,
+  FaUserCircle,
+} from "react-icons/fa";
 
 export default function Header() {
   const [showHeader, setShowHeader] = useState(true);
@@ -11,7 +17,6 @@ export default function Header() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      // If scrolling up then show header; if scrolling down and scrolled past 100px, hide it.
       if (currentScrollY < lastScrollY) {
         setShowHeader(true);
       } else if (currentScrollY > 100) {
@@ -72,6 +77,18 @@ export default function Header() {
 
       {/* Sağ menü */}
       <nav className="absolute right-4 top-0 h-full flex items-center gap-4 px-6 text-white">
+        {/* 🔽 EKLENDİ: Contact’ın SOLUNA avatar/kişi simgesi */}
+        <Link
+          href="/admin"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Admin panel"
+          title="Admin"
+          className="p-2 rounded-full text-white hover:bg-gray-800 transition-colors"
+        >
+          <FaUserCircle size={20} />
+        </Link>
+
         <Link
           href="/contact"
           className="text-white hover:text-gray-300 transition-colors"
