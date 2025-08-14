@@ -76,7 +76,7 @@ export const teamData: TeamData = {
     avionic: [
       {
         id: "av-1",
-        name: "Muhammet Sefa Konca",
+        name: "Muhammed Sefa Konca",
         role: "Avionic",
         imageUrl: "/drone.jpg",
         linkedinUrl: "https://www.linkedin.com/",
