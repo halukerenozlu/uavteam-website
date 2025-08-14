@@ -2,6 +2,7 @@
 
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 // Henüz oluşturmadıysanız, bu iki dosyayı components/header ve components/footer klasöründe oluşturacağız
@@ -39,6 +40,7 @@ export default function RootLayout({
 
         {/* Footer */}
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
