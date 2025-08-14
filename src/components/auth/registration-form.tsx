@@ -30,7 +30,7 @@ export function RegistrationForm({
 
     // Simulate API call
     setTimeout(() => {
-      if (code === "ADMIN2024") {
+      if (code === "ADMIN2025") {
         // Mock verification code
         onCodeVerified();
       } else {
