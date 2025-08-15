@@ -3,10 +3,9 @@ import { FaInstagram, FaLinkedin, FaYoutube } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="relative w-full  bg-black h-[7vh] text-white py-2 px-2 mx-4">
-      {/* Sol menü */}
-
-      <nav className="absolute left-4 top-0 h-full flex items-center gap-6 px-6 text-white">
+    <footer className="relative w-full bg-black h-[7vh] text-white py-2 px-2 mx-4">
+      {/* Sol menü — >=821px görünür, <820px gizli */}
+      <nav className="absolute left-4 top-0 h-full hidden min-[821px]:flex items-center gap-6 px-6 text-white">
         <Link
           href="/about"
           className="text-white hover:text-gray-300 transition-colors"
@@ -33,13 +32,13 @@ export default function Footer() {
         </Link>
       </nav>
 
-      {/* Merkez başlık */}
+      {/* Merkez başlık - her boyutta görünür */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <span className="font-bold text-white">© 2025 Kuasar UAV Team</span>
       </div>
 
-      {/* Sağ menü */}
-      <nav className="absolute right-4 top-0 h-full flex items-center gap-4 px-6 text-white">
+      {/* Sağ menü — >=821px görünür, <820px gizli */}
+      <nav className="absolute right-4 top-0 h-full hidden min-[821px]:flex items-center gap-4 px-6 text-white">
         <Link
           href="/contact"
           className="text-white hover:text-gray-300 transition-colors"
