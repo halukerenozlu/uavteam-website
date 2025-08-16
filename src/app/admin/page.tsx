@@ -1,3 +1,4 @@
+// src/app/admin/page.tsx
 "use client";
 import type React from "react";
 import { useState } from "react";
@@ -65,15 +66,16 @@ export default function LoginPage() {
         );
     }
   };
+
   return (
     <div className="min-h-screen flex">
-      {/* Authentication Form Section */}
-      <div className="flex-1 flex items-center justify-center bg-gray-50 p-8">
+      {/* Sol: Authentication Form */}
+      <div className="flex-1 flex items-center justify-center bg-gray-50 p-8 max-[570px]:p-6">
         <div className="max-w-md w-full">{renderCurrentForm()}</div>
       </div>
 
-      {/* Image Section */}
-      <div className="flex-1 bg-gradient-to-br from-red-600 to-gray-950 flex items-center justify-center">
+      {/* Sağ: Görsel (820px altı tamamen gizlenir) */}
+      <div className="flex-1 bg-gradient-to-br from-red-600 to-gray-950 flex items-center justify-center max-[820px]:hidden">
         <div className="text-center text-white p-8">
           <div className="w-64 h-64 rounded-lg flex items-center justify-center mb-6">
             <Image
@@ -82,6 +84,7 @@ export default function LoginPage() {
               width={256}
               height={256}
               className="rounded-lg shadow-lg"
+              priority
             />
           </div>
         </div>

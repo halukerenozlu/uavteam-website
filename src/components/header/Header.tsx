@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { openAdminTab } from "@/lib/openAdminTab";
 import { usePathname } from "next/navigation";
 import {
   FaInstagram,
@@ -162,11 +163,10 @@ export default function Header() {
           <div className="hidden min-[821px]:flex items-center justify-end gap-4 px-6 !p-2">
             <Link
               href="/admin"
-              target="_blank"
-              rel="noopener noreferrer"
               aria-label="Admin panel"
               title="Admin"
               className="p-2 rounded-full hover:bg-white/10 transition-colors"
+              onClick={(e) => openAdminTab(e)}
             >
               <FaUserCircle size={20} />
             </Link>
