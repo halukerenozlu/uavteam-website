@@ -9,12 +9,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 interface PasswordResetFormProps extends React.ComponentProps<"div"> {
+  username: string; // ← eklendi (Forgot’tan gelir)
+  securityAnswer: string; // ← eklendi (Forgot’tan gelir)
   onPasswordReset: () => void;
   onBackToLogin: () => void;
 }
 
 export function PasswordResetForm({
   className,
+  username,
+  securityAnswer,
   onPasswordReset,
   onBackToLogin,
   ...props
@@ -26,14 +30,16 @@ export function PasswordResetForm({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isResetting, setIsResetting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [serverError, setServerError] = useState(""); // ← eklendi
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.newPassword) {
       newErrors.newPassword = "Yeni şifre gereklidir";
-    } else if (formData.newPassword.length < 6) {
-      newErrors.newPassword = "Şifre en az 6 karakter olmalıdır";
+    } else if (formData.newPassword.length < 8) {
+      // 8 önerilir
+      newErrors.newPassword = "Şifre en az 8 karakter olmalıdır";
     }
 
     if (!formData.confirmPassword) {
@@ -52,17 +58,34 @@ export function PasswordResetForm({
     if (!validateForm()) return;
 
     setIsResetting(true);
+    setServerError("");
 
-    // Simulate API call
-    setTimeout(() => {
-      setShowSuccess(true);
+    try {
+      const res = await fetch("/api/admin/reset", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: username.trim(),
+          securityAnswer: securityAnswer.trim(),
+          newPassword: formData.newPassword,
+        }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.ok) {
+        setShowSuccess(true);
+        // 3 sn sonra login'e dön
+        setTimeout(() => {
+          onPasswordReset();
+        }, 3000);
+      } else {
+        setServerError(data?.error || "İşlem başarısız.");
+      }
+    } catch {
+      setServerError("Sunucuya bağlanılamadı. Tekrar deneyin.");
+    } finally {
       setIsResetting(false);
-
-      // Auto redirect after 3 seconds
-      setTimeout(() => {
-        onPasswordReset();
-      }, 3000);
-    }, 1500);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -82,7 +105,7 @@ export function PasswordResetForm({
                 <div className="flex flex-col items-center text-center">
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
                     <svg
-                      className="w-8 h-8 text-green-600"
+                      className="w-8 h-8"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -98,19 +121,7 @@ export function PasswordResetForm({
                   <h1 className="text-2xl font-bold text-green-600">
                     Şifre Başarıyla Değiştirildi
                   </h1>
-                  <p className="text-muted-foreground text-balance">
-                    Şifreniz başarıyla güncellendi. Yeni şifrenizle giriş
-                    yapabilirsiniz.
-                  </p>
                 </div>
-
-                <div className="text-center text-sm text-muted-foreground">
-                  3 saniye sonra giriş sayfasına yönlendirileceksiniz...
-                </div>
-
-                <Button onClick={onPasswordReset} className="w-full">
-                  Hemen Giriş Yap
-                </Button>
               </div>
             </div>
           </CardContent>
@@ -127,9 +138,6 @@ export function PasswordResetForm({
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Yeni Şifre Oluştur</h1>
-                <p className="text-muted-foreground text-balance">
-                  Hesabınız için yeni bir şifre belirleyin
-                </p>
               </div>
 
               <div className="grid gap-3">
@@ -138,7 +146,8 @@ export function PasswordResetForm({
                   id="new-password"
                   type="password"
                   className="!p-1"
-                  placeholder="En az 6 karakter"
+                  autoComplete="new-password"
+                  placeholder="En az 8 karakter"
                   value={formData.newPassword}
                   onChange={(e) =>
                     handleInputChange("newPassword", e.target.value)
@@ -155,6 +164,8 @@ export function PasswordResetForm({
                 <Input
                   id="confirm-new-password"
                   type="password"
+                  className="!p-1"
+                  autoComplete="new-password"
                   value={formData.confirmPassword}
                   onChange={(e) =>
                     handleInputChange("confirmPassword", e.target.value)
@@ -167,6 +178,11 @@ export function PasswordResetForm({
                   </p>
                 )}
               </div>
+
+              {/* Sunucu hatası */}
+              {serverError && (
+                <p className="text-sm text-red-600">{serverError}</p>
+              )}
 
               <Button type="submit" className="w-full" disabled={isResetting}>
                 {isResetting ? "Şifre Güncelleniyor..." : "Şifreyi Güncelle"}

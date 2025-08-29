@@ -36,6 +36,8 @@ export function AccountSetupForm({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isCreating, setIsCreating] = useState(false);
 
+  const [serverError, setServerError] = useState("");
+
   const securityQuestions = [
     "İlk evcil hayvanınızın adı neydi?",
     "Doğduğunuz şehir neresidir?",
@@ -55,12 +57,8 @@ export function AccountSetupForm({
 
     if (!formData.password) {
       newErrors.password = "Şifre gereklidir";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Şifre en az 6 karakter olmalıdır";
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Şifreler eşleşmiyor";
+    } else if (formData.password.length < 8) {
+      newErrors.password = "Şifre en az 8 karakter olmalıdır";
     }
 
     if (!formData.securityQuestion) {
@@ -81,14 +79,33 @@ export function AccountSetupForm({
     if (!validateForm()) return;
 
     setIsCreating(true);
+    setServerError("");
 
-    // Simulate API call
-    setTimeout(() => {
-      // Mock account creation
-      console.log("Account created:", formData);
-      onAccountCreated();
+    try {
+      const res = await fetch("/api/admin/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: formData.username.trim(),
+          password: formData.password,
+          securityQuestion: formData.securityQuestion,
+          securityAnswer: formData.securityAnswer,
+        }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok || !data?.ok) {
+        setServerError(data?.error || "Kayıt başarısız.");
+        return;
+      }
+
+      onAccountCreated(); // burada yönlendirme yapıyorsun (ör. /admin/dashboard)
+    } catch {
+      setServerError("Ağ/Sunucu hatası.");
+    } finally {
       setIsCreating(false);
-    }, 1500);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -108,9 +125,6 @@ export function AccountSetupForm({
                 <h1 className="text-2xl font-bold">
                   Hesap Bilgilerini Tamamla
                 </h1>
-                <p className="text-muted-foreground text-balance">
-                  Admin hesabınızı oluşturmak için gerekli bilgileri girin
-                </p>
               </div>
 
               <div className="grid gap-3">
@@ -137,7 +151,7 @@ export function AccountSetupForm({
                   id="setup-password"
                   type="password"
                   className="!p-1"
-                  placeholder="En az 6 karakter"
+                  placeholder="En az 8 karakter"
                   value={formData.password}
                   onChange={(e) =>
                     handleInputChange("password", e.target.value)
@@ -149,11 +163,12 @@ export function AccountSetupForm({
                 )}
               </div>
 
-              {/* <div className="grid gap-3">
+              <div className="grid gap-3">
                 <Label htmlFor="confirm-password">Şifre Tekrar</Label>
                 <Input
                   id="confirm-password"
                   type="password"
+                  className="!p-1"
                   placeholder="Şifrenizi tekrar girin"
                   value={formData.confirmPassword}
                   onChange={(e) =>
@@ -166,21 +181,25 @@ export function AccountSetupForm({
                     {errors.confirmPassword}
                   </p>
                 )}
-              </div> */}
+              </div>
 
               <div className="grid gap-3">
                 <Label htmlFor="security-question">Güvenlik Sorusu</Label>
                 <Select
+                  value={formData.securityQuestion}
                   onValueChange={(value) =>
                     handleInputChange("securityQuestion", value)
                   }
                 >
-                  <SelectTrigger className="!p-1">
+                  {/* Trigger tam genişlik */}
+                  <SelectTrigger className="w-full !p-1">
                     <SelectValue placeholder="Güvenlik sorusu seçin" />
                   </SelectTrigger>
-                  <SelectContent>
+
+                  {/* Popper pozisyonu: yerleşim daha stabil olur */}
+                  <SelectContent position="popper" sideOffset={4} align="start">
                     {securityQuestions.map((question, index) => (
-                      <SelectItem key={index} value={question}>
+                      <SelectItem className="!p-1" key={index} value={question}>
                         {question}
                       </SelectItem>
                     ))}
@@ -200,6 +219,7 @@ export function AccountSetupForm({
                 <Input
                   id="security-answer"
                   type="text"
+                  className="!p-1"
                   value={formData.securityAnswer}
                   onChange={(e) =>
                     handleInputChange("securityAnswer", e.target.value)
@@ -212,6 +232,13 @@ export function AccountSetupForm({
                   </p>
                 )}
               </div>
+
+              {/* Hata mesajı (API'den gelen) */}
+              {serverError && (
+                <p className="text-sm text-red-600" role="alert">
+                  {serverError}
+                </p>
+              )}
 
               <Button type="submit" className="w-full" disabled={isCreating}>
                 {isCreating ? "Hesap Oluşturuluyor..." : "Hesabı Oluştur"}

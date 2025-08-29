@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -9,7 +9,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 interface ForgotPasswordFormProps extends React.ComponentProps<"div"> {
-  onPasswordResetAllowed: () => void;
+  // ✨ Reset adımına geçmek için username + securityAnswer'ı yukarı gönderiyoruz
+  onPasswordResetAllowed: (p: {
+    username: string;
+    securityAnswer: string;
+  }) => void;
   onBackToLogin: () => void;
 }
 
@@ -23,86 +27,57 @@ export function ForgotPasswordForm({
   const [showSecurityQuestion, setShowSecurityQuestion] = useState(false);
   const [securityQuestion, setSecurityQuestion] = useState("");
   const [securityAnswer, setSecurityAnswer] = useState("");
-  const [attemptsLeft, setAttemptsLeft] = useState(3);
-  const [isBlocked, setIsBlocked] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(0);
   const [error, setError] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
 
-  // Mock user data - in real app this would come from database
-  const mockUserData = {
-    username: "admin",
-    securityQuestion: "İlk evcil hayvanınızın adı neydi?",
-    securityAnswer: "karabaş",
-  };
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isBlocked && timeLeft > 0) {
-      interval = setInterval(() => {
-        setTimeLeft((prev) => {
-          if (prev <= 1) {
-            setIsBlocked(false);
-            setAttemptsLeft(3);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [isBlocked, timeLeft]);
-
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
-  };
-
-  const handleUsernameSubmit = (e: React.FormEvent) => {
+  // Kullanıcı adını gönder → güvenlik sorusunu DB'den getir
+  const handleUsernameSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
-    if (username.toLowerCase() === mockUserData.username.toLowerCase()) {
-      setSecurityQuestion(mockUserData.securityQuestion);
-      setShowSecurityQuestion(true);
-    } else {
-      setError("Kullanıcı bulunamadı");
+    const name = username.trim();
+    if (!name) {
+      setError("Kullanıcı adı gerekli");
+      return;
     }
-  };
 
-  const handleSecurityAnswerSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsVerifying(true);
-    setError("");
+    try {
+      const res = await fetch("/api/admin/forgot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: name }),
+      });
 
-    setTimeout(() => {
-      if (
-        securityAnswer.toLowerCase().trim() ===
-        mockUserData.securityAnswer.toLowerCase()
-      ) {
-        // Correct answer - allow password reset
-        onPasswordResetAllowed();
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data?.ok && data.securityQuestion) {
+        setSecurityQuestion(String(data.securityQuestion));
+        setShowSecurityQuestion(true);
       } else {
-        // Wrong answer
-        const newAttemptsLeft = attemptsLeft - 1;
-        setAttemptsLeft(newAttemptsLeft);
-
-        if (newAttemptsLeft === 0) {
-          // Block user for 30 minutes (1800 seconds)
-          setIsBlocked(true);
-          setTimeLeft(1800);
-          setShowSecurityQuestion(false);
-          setError(
-            "3 yanlış deneme yaptınız. 30 dakika sonra tekrar deneyebilirsiniz."
-          );
-        } else {
-          setError(`Yanlış cevap. ${newAttemptsLeft} hakkınız kaldı.`);
-        }
-        setSecurityAnswer("");
+        setError(data?.error || "Kullanıcı bulunamadı");
       }
+    } catch {
+      setError("Sunucuya bağlanılamadı. Tekrar deneyin.");
+    }
+  };
+
+  // Cevabı al → reset adımına geç (doğrulama /api/admin/reset’te yapılacak)
+  const handleSecurityAnswerSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setIsVerifying(true);
+
+    const name = username.trim();
+    const answer = securityAnswer.trim();
+
+    if (!answer) {
+      setError("Cevap gerekli");
       setIsVerifying(false);
-    }, 1000);
+      return;
+    }
+
+    // Doğrulamayı reset endpoint'i yapacak; biz sadece bir sonraki adıma geçiyoruz
+    onPasswordResetAllowed({ username: name, securityAnswer: answer });
+    setIsVerifying(false);
   };
 
   const resetForm = () => {
@@ -112,47 +87,6 @@ export function ForgotPasswordForm({
     setSecurityAnswer("");
     setError("");
   };
-
-  if (isBlocked) {
-    return (
-      <div className={cn("flex flex-col gap-6", className)} {...props}>
-        <Card className="overflow-hidden p-0">
-          <CardContent className="grid !p-10">
-            <div className="p-6 md:p-8">
-              <div className="flex flex-col gap-6">
-                <div className="flex flex-col items-center text-center">
-                  <h1 className="text-2xl font-bold text-red-600">
-                    Hesap Geçici Olarak Kilitlendi
-                  </h1>
-                  <p className="text-muted-foreground text-balance">
-                    3 yanlış deneme yaptığınız için hesabınız geçici olarak
-                    kilitlendi.
-                  </p>
-                </div>
-
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-red-600 mb-2">
-                    {formatTime(timeLeft)}
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    Kalan süre sonunda tekrar deneyebilirsiniz
-                  </p>
-                </div>
-
-                <Button
-                  onClick={onBackToLogin}
-                  variant="outline"
-                  className="w-full bg-transparent"
-                >
-                  Giriş Sayfasına Dön
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -173,6 +107,8 @@ export function ForgotPasswordForm({
                   <Input
                     id="forgot-username"
                     type="text"
+                    autoComplete="username"
+                    className="!p-1"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     required
@@ -214,6 +150,7 @@ export function ForgotPasswordForm({
                   <Input
                     id="security-answer"
                     type="text"
+                    className="!p-1"
                     placeholder="Güvenlik sorusunun cevabını girin"
                     value={securityAnswer}
                     onChange={(e) => setSecurityAnswer(e.target.value)}
@@ -222,13 +159,8 @@ export function ForgotPasswordForm({
                   {error && <p className="text-sm text-red-600">{error}</p>}
                 </div>
 
-                <div className="text-center text-sm text-muted-foreground">
-                  Kalan hakkınız:{" "}
-                  <span className="font-bold text-primary">{attemptsLeft}</span>
-                </div>
-
                 <Button type="submit" className="w-full" disabled={isVerifying}>
-                  {isVerifying ? "Doğrulanıyor..." : "Cevabı Doğrula"}
+                  {isVerifying ? "Devam ediliyor..." : "Devam Et"}
                 </Button>
 
                 <div className="text-center text-sm text-muted-foreground">
