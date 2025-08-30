@@ -1,6 +1,5 @@
-"use client";
-
 import Hero from "@/components/hero/Hero";
+import FeaturedVehicleCarousel from "@/app/(public)/_sections/FeaturedVehicleCarousel";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -73,7 +72,9 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+
         <div className="h-[25px]"></div>
+
         {/* Vehicles Section */}
         <section id="vehicles" className="bg-white text-black py-16">
           <div className="container">
@@ -113,34 +114,14 @@ export default function HomePage() {
 
                 {/* Sağ taraf - Carousel */}
                 <div className="w-full flex justify-center">
-                  <Carousel className="w-full max-w-xs">
-                    <CarouselContent>
-                      {Array.from({ length: 5 }).map((_, index) => (
-                        <CarouselItem key={index}>
-                          <div className="p-1">
-                            <Card>
-                              <CardContent className="flex aspect-square items-center justify-center p-2">
-                                <Image
-                                  src="/nokta.png"
-                                  alt={`Vehicle ${index + 1}`}
-                                  width={300}
-                                  height={300}
-                                  className="rounded-lg object-cover w-full h-full"
-                                />
-                              </CardContent>
-                            </Card>
-                          </div>
-                        </CarouselItem>
-                      ))}
-                    </CarouselContent>
-                    <CarouselPrevious />
-                    <CarouselNext />
-                  </Carousel>
+                  {/* DB'den gelen görseller */}
+                  <FeaturedVehicleCarousel take={5} />
                 </div>
               </div>
             </div>
           </div>
         </section>
+
         <div className="h-[45px]"></div>
 
         {/* Competitions Section */}

@@ -7,25 +7,36 @@ import { useRouter } from "next/navigation";
 import Sidebar from "../_components/Sidebar";
 import Topbar from "../_components/Topbar";
 
+// API'den gelecek tip (username dönerse)
+type Me = { username?: string };
+
 export default function AdminPanelLayout({
   children,
 }: {
   children: ReactNode;
 }) {
   const [open, setOpen] = useState(false);
+  const [me, setMe] = useState<Me | null>(null); // 👈 kullanıcı bilgisi
   const router = useRouter();
 
-  // 🔒 Oturumu mount'ta ve geri/visible olduğunda doğrula
   useEffect(() => {
     const verify = async () => {
       const res = await fetch("/api/admin/me", {
         credentials: "include",
         cache: "no-store",
       });
-      if (!res.ok) router.replace("/admin");
+      if (!res.ok) {
+        router.replace("/admin");
+        return;
+      }
+      try {
+        const data = await res.json();
+        setMe(data); // { username: "..."} gibi
+      } catch {
+        setMe(null);
+      }
     };
 
-    // İlk yüklemede kontrol
     verify();
 
     // BFCache dönüşlerinde tetikle
@@ -57,13 +68,16 @@ export default function AdminPanelLayout({
 
   return (
     <div className="min-h-svh">
-      {/* Üstte sabit Topbar */}
-      <Topbar onMenuClick={() => setOpen((o) => !o)} isMenuOpen={open} />
+      {/* Topbar artık user prop'u alıyor */}
+      <Topbar
+        onMenuClick={() => setOpen((o) => !o)}
+        isMenuOpen={open}
+        user={me}
+      />
 
-      {/* Topbar yüksekliği kadar üst boşluk */}
-      <div className="pt-14 grid md:grid-cols-[260px_1fr]">
+      <div className="pt-14 grid md:grid-cols-[260px_1fr] ">
         {/* Desktop Sidebar */}
-        <aside className="hidden md:block sticky top-14 h-[calc(100vh-56px)] border-r bg-background">
+        <aside className="hidden md:block sticky top-14 h-[calc(100vh-56px)] border-r bg-background ">
           <Sidebar />
         </aside>
 
@@ -84,6 +98,7 @@ export default function AdminPanelLayout({
           onClick={() => setOpen(false)}
         />
         <div
+          id="admin-mobile-drawer"
           className={`fixed top-14 left-0 h-[calc(100vh-56px)] w-72 bg-background border-r shadow-lg transition-transform duration-200
           ${open ? "translate-x-0" : "-translate-x-full"}`}
           role="dialog"

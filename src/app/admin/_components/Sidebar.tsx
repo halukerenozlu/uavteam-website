@@ -9,14 +9,15 @@ const links = [
   { href: "/admin/competitions", label: "Competitions" },
   { href: "/admin/team", label: "Team Members" },
   { href: "/admin/news", label: "News" },
+  { href: "/admin/settings", label: "Settings" },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="h-full !m-9">
-      <nav className="!space-y-3">
+    <div className="h-full !m-9 ">
+      <nav className="!space-y-3 ">
         {links.map((l) => (
           <Link
             key={l.href}
