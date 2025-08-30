@@ -1,9 +1,9 @@
-export const runtime = "nodejs";
-
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
+
+export const runtime = "nodejs";
 
 const BodySchema = z.object({
   username: z.string().min(5),

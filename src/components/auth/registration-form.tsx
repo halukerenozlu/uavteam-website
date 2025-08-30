@@ -28,16 +28,27 @@ export function RegistrationForm({
     setIsVerifying(true);
     setError("");
 
-    // Simulate API call
-    setTimeout(() => {
-      if (code === "ADMIN2025") {
-        // Mock verification code
-        onCodeVerified();
+    try {
+      const res = await fetch("/api/admin/verify-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.ok) {
+        onCodeVerified(); // ✅ Kod doğruysa bir sonraki adıma geç
       } else {
-        setError("Geçersiz kod. Lütfen tekrar deneyin.");
+        const msg =
+          data?.error === "already_initialized"
+            ? "Kayıt kapalı: Zaten bir Admin var."
+            : "Geçersiz veya kullanılamaz kod.";
+        setError(msg);
       }
+    } finally {
       setIsVerifying(false);
-    }, 1000);
+    }
   };
 
   return (

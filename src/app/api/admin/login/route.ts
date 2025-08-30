@@ -1,10 +1,10 @@
 // src/app/api/admin/login/route.ts
-export const runtime = "nodejs";
-
 import { NextResponse } from "next/server";
 import { SignJWT } from "jose";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+
+export const runtime = "nodejs";
 
 const COOKIE_NAME = "session";
 const EXP_HOURS = 12;
