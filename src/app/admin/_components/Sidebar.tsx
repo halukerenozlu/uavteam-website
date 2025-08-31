@@ -3,20 +3,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const links = [
-  { href: "/admin/dashboard", label: "Dashboard" },
+  { href: "/admin/control-center", label: "Control Center" },
   { href: "/admin/vehicles", label: "Vehicles" },
-  { href: "/admin/sponsors", label: "Sponsors" },
-  { href: "/admin/competitions", label: "Competitions" },
   { href: "/admin/team", label: "Team Members" },
   { href: "/admin/news", label: "News" },
-  { href: "/admin/settings", label: "Settings" },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="h-full !m-9 ">
+    <div className="h-full !m-12 ">
       <nav className="!space-y-3 ">
         {links.map((l) => (
           <Link
@@ -30,7 +27,7 @@ export default function Sidebar() {
             {pathname === l.href && (
               <span
                 className="absolute left-0 bottom-0 h-1 bg-red-500 transition-all duration-300 ease-in-out"
-                style={{ width: "calc(100% - 3rem)" }}
+                style={{ width: "calc(100% - 1.5rem)" }}
               />
             )}
           </Link>

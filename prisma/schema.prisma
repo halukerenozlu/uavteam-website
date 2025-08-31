@@ -26,3 +26,28 @@ model Admin {
   securityAnswerHash String
   createdAt          DateTime @default(now())
 }
+
+model ApplyLinks {
+  id         Int      @id @default(1)
+  mechanical String?
+  avionic    String?
+  software   String?
+  updatedAt  DateTime @updatedAt
+}
+
+model SocialLink {
+  id        Int      @id @default(autoincrement())
+  label     String   @unique     // Instagram / YouTube / LinkedIn
+  url       String   @default("")
+  order     Int      @default(0)
+  updatedAt DateTime @updatedAt
+}
+
+model Sponsor {
+  id        String   @id @default(uuid())
+  imageUrl  String
+  title     String?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}

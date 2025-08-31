@@ -6,6 +6,12 @@ import { teamData } from "./teamData";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
+type FormsOverride = {
+  mechanical?: string;
+  avionic?: string;
+  software?: string;
+};
+
 function Connector() {
   return (
     <div className="flex flex-col items-center">
@@ -23,40 +29,45 @@ function Connector2() {
   );
 }
 
-export default function TeamSection() {
-  const { president, captains, squads, forms } = teamData;
+export default function TeamSection({
+  forms: formsOverride,
+}: { forms?: FormsOverride } = {}) {
+  const { president, captains, squads, forms: defaultForms } = teamData;
+
+  // DB’den gelen değerleri default’larla birleştir
+  const forms = {
+    mechanical: formsOverride?.mechanical || defaultForms.mechanical,
+    avionic: formsOverride?.avionic || defaultForms.avionic,
+    software: formsOverride?.software || defaultForms.software,
+  };
 
   return (
     <section id="team" className="bg-white text-black">
       <div className="h-[40px]" />
       <div className="w-full flex justify-center">
-        {/* Ortalamak için container */}
         <div className="mx-auto max-w-[1200px] px-8 py-16 flex flex-col items-center gap-16">
-          {/* 1) Başkan — ortada */}
+          {/* 1) Başkan */}
           <div className="flex flex-col items-center">
             <TeamMemberCard member={president} size="lg" />
           </div>
 
-          {/* Başkan → Kaptanlar bağlayıcı */}
           <Connector />
 
-          {/* 2) Kaptanlar — 2 sütun, ortalanmış */}
+          {/* 2) Kaptanlar */}
           <div className="flex flex-wrap justify-center gap-10 mx-auto md:max-w-[600px]">
             {captains.map((c) => (
               <TeamMemberCard key={c.id} member={c} />
             ))}
           </div>
 
-          {/* Kaptanlar → Skuadlar bağlayıcı */}
           <Connector2 />
 
-          {/* 3) Skuadlar — üç sütun: Mechanical / Avionics / Software */}
+          {/* 3) Skuadlar */}
           <div className="grid w-full gap-20 md:grid-cols-3">
             {/* Mechanical */}
             <div className="flex flex-col items-center text-center">
               <h4 className="text-xl font-semibold mb-4">Mechanical</h4>
               <div className="h-[30px]" />
-              {/* Her satırda max 3 üye, fazlası alt satıra iner */}
               <div className="flex flex-wrap justify-center gap-6 w-full mx-auto md:max-w-[528px]">
                 {squads.mechanical.map((m) => (
                   <TeamMemberCard key={m.id} member={m} />
@@ -86,8 +97,10 @@ export default function TeamSection() {
               </div>
             </div>
           </div>
+
           <div className="h-[40px]" />
-          {/* 4) Join Us — en altta, ortada */}
+
+          {/* 4) Join Us */}
           <div id="join" className="w-full">
             <div className="w-full flex justify-center">
               <div className="mx-auto max-w-3xl text-center space-y-6">

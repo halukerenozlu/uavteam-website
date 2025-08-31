@@ -14,21 +14,43 @@ export const revalidate = 0;
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
+// 1) Dönen satırların tipini netleştir
+type VehicleRow = {
+  imageUrl: string | null; // şemanız non-null ise string yapın
+  title: string | null;
+};
+
+// 2) UI’da kullanacağımız image tipini netleştir
+type UiImage = {
+  src: string;
+  alt: string;
+};
+
 export default async function FeaturedVehicleCarousel({
   take = 5,
 }: {
   take?: number;
 }) {
-  const rows = await prisma.vehicle.findMany({
+  // 3) rows'u açıkça tipleyin
+  const rows: VehicleRow[] = await prisma.vehicle.findMany({
     orderBy: { createdAt: "desc" },
     take,
     select: { imageUrl: true, title: true },
   });
 
-  const images = rows.map((r) => ({
-    src: r.imageUrl,
-    alt: r.title || "Vehicle",
-  }));
+  // 4) images'i açık tip ile üretin — artık img ve i otomatik tiplenecek
+  const images: UiImage[] = rows
+    .filter(
+      (
+        r
+      ): r is Required<Pick<VehicleRow, "imageUrl">> & {
+        title: string | null;
+      } => !!r.imageUrl
+    )
+    .map((r) => ({
+      src: r.imageUrl!, // filter ile null'ı eledik
+      alt: r.title ?? "Vehicle",
+    }));
 
   return (
     <div className="w-full flex justify-center">
