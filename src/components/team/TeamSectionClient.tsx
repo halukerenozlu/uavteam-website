@@ -163,7 +163,7 @@ export default function TeamSectionClient({
           <div className="h-[40px]" />
 
           {/* Join Us */}
-          <div id="join" className="w-full">
+          <div id="join" className="w-full !px-4 !sm:px-0">
             <div className="w-full flex justify-center">
               <div className="mx-auto max-w-3xl text-center space-y-6">
                 <div className="flex flex-col items-center">

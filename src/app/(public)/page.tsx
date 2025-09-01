@@ -22,7 +22,7 @@ export default function HomePage() {
         title="KUASAR UAV TEAM"
         subtitle="Become a part of the most innovative projects and be part of a passionate team"
       />
-      <main className="bg-white text-black">
+      <main className="bg-white text-black !px-6 !sm:px-0">
         {/* About Section */}
         <section id="about" className="bg-white text-black py-16">
           <div className="container">

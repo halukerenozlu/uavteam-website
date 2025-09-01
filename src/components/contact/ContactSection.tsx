@@ -16,7 +16,10 @@ export default function ContactSection() {
   const lng = 29.899136814730053;
 
   return (
-    <section id="contact" className="bg-club-white text-club-black py-16  ">
+    <section
+      id="contact"
+      className="bg-club-white text-club-black py-16  !px-6 !sm:px-0 "
+    >
       {/* İçerik */}
       <section>
         <div className="h-[50px]" />

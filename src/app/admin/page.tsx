@@ -103,7 +103,9 @@ export default function LoginPage() {
       <LoginHistoryGuard />
       {/* Sol: Authentication Form */}
       <div className="flex-1 flex items-center justify-center bg-gray-50 p-8 max-[570px]:p-6">
-        <div className="max-w-md w-full">{renderCurrentForm()}</div>
+        <div className="max-w-md w-full !px-4 !sm:px-0">
+          {renderCurrentForm()}
+        </div>
       </div>
 
       {/* Sağ: Görsel (820px altı tamamen gizlenir) */}
