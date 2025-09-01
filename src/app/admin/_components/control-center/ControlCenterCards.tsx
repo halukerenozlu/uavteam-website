@@ -192,6 +192,7 @@ export function ControlCenterCards() {
           <div className="flex items-center gap-2 !p-2">
             <Input
               placeholder="Görsel URL'si (https://...)"
+              className="!mb-0 !flex-1 !p-1"
               value={newSponsorUrl}
               onChange={(e) => setNewSponsorUrl(e.target.value)}
             />

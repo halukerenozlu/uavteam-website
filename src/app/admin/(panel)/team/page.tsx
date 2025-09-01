@@ -1,12 +1,16 @@
-export default function TeamDashboard() {
+// src/app/admin/(panel)/team/page.tsx
+import { getMembers } from "@/app/admin/(panel)/team/actions";
+import TeamMembersList from "@/app/admin/_components/team/TeamMembersList";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const runtime = "nodejs";
+
+export default async function TeamPage() {
+  const items = await getMembers();
   return (
-    <main className="min-h-svh flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-2xl font-bold">Team Dashboard</h1>
-        <p className="text-muted-foreground">
-          Takım üyelerinin değişmesi burada olacak.
-        </p>
-      </div>
+    <main className="min-h-svh !pt-20 !m-6">
+      <TeamMembersList items={items} />
     </main>
   );
 }

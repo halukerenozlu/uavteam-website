@@ -1,15 +1,25 @@
-// src/components/team/TeamSection.tsx
+// src/components/team/TeamSectionClient.tsx
 "use client";
 
 import TeamMemberCard from "./TeamMemberCard";
-import { teamData } from "./teamData";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-type FormsOverride = {
-  mechanical?: string;
-  avionic?: string;
-  software?: string;
+type Forms = {
+  mechanical: string;
+  avionics: string;
+  software: string;
+};
+
+type Member = {
+  id: string;
+  name: string;
+  role?: string | null;
+  squad?: "mechanical" | "avionics" | "software" | null;
+  isCaptain: boolean;
+  isPresident: boolean;
+  imageUrl?: string | null;
+  linkedinUrl?: string | null;
 };
 
 function Connector() {
@@ -29,16 +39,19 @@ function Connector2() {
   );
 }
 
-export default function TeamSection({
-  forms: formsOverride,
-}: { forms?: FormsOverride } = {}) {
-  const { president, captains, squads, forms: defaultForms } = teamData;
-
-  // DB’den gelen değerleri default’larla birleştir
-  const forms = {
-    mechanical: formsOverride?.mechanical || defaultForms.mechanical,
-    avionic: formsOverride?.avionic || defaultForms.avionic,
-    software: formsOverride?.software || defaultForms.software,
+export default function TeamSectionClient({
+  members,
+  forms,
+}: {
+  members: Member[];
+  forms: Forms;
+}) {
+  const president = members.find((m) => m.isPresident) ?? null;
+  const captains = members.filter((m) => m.isCaptain && !m.isPresident);
+  const squads = {
+    mechanical: members.filter((m) => m.squad === "mechanical"),
+    avionics: members.filter((m) => m.squad === "avionics"),
+    software: members.filter((m) => m.squad === "software"),
   };
 
   return (
@@ -46,23 +59,45 @@ export default function TeamSection({
       <div className="h-[40px]" />
       <div className="w-full flex justify-center">
         <div className="mx-auto max-w-[1200px] px-8 py-16 flex flex-col items-center gap-16">
-          {/* 1) Başkan */}
-          <div className="flex flex-col items-center">
-            <TeamMemberCard member={president} size="lg" />
-          </div>
+          {/* President */}
+          {president && (
+            <div className="flex flex-col items-center">
+              <TeamMemberCard
+                member={{
+                  id: president.id,
+                  name: president.name,
+                  role: president.role ?? undefined,
+                  imageUrl: president.imageUrl ?? undefined,
+                  linkedinUrl: president.linkedinUrl ?? undefined,
+                }}
+                size="lg"
+              />
+            </div>
+          )}
 
           <Connector />
 
-          {/* 2) Kaptanlar */}
-          <div className="flex flex-wrap justify-center gap-10 mx-auto md:max-w-[600px]">
-            {captains.map((c) => (
-              <TeamMemberCard key={c.id} member={c} />
-            ))}
-          </div>
+          {/* Captains */}
+          {captains.length > 0 && (
+            <div className="flex flex-wrap justify-center gap-10 mx-auto md:max-w-[600px]">
+              {captains.map((c) => (
+                <TeamMemberCard
+                  key={c.id}
+                  member={{
+                    id: c.id,
+                    name: c.name,
+                    role: c.role ?? undefined,
+                    imageUrl: c.imageUrl ?? undefined,
+                    linkedinUrl: c.linkedinUrl ?? undefined,
+                  }}
+                />
+              ))}
+            </div>
+          )}
 
           <Connector2 />
 
-          {/* 3) Skuadlar */}
+          {/* Squads */}
           <div className="grid w-full gap-20 md:grid-cols-3">
             {/* Mechanical */}
             <div className="flex flex-col items-center text-center">
@@ -70,18 +105,36 @@ export default function TeamSection({
               <div className="h-[30px]" />
               <div className="flex flex-wrap justify-center gap-6 w-full mx-auto md:max-w-[528px]">
                 {squads.mechanical.map((m) => (
-                  <TeamMemberCard key={m.id} member={m} />
+                  <TeamMemberCard
+                    key={m.id}
+                    member={{
+                      id: m.id,
+                      name: m.name,
+                      role: m.role ?? undefined,
+                      imageUrl: m.imageUrl ?? undefined,
+                      linkedinUrl: m.linkedinUrl ?? undefined,
+                    }}
+                  />
                 ))}
               </div>
             </div>
 
-            {/* Avionic */}
+            {/* Avionics */}
             <div className="flex flex-col items-center">
-              <h4 className="text-xl font-semibold mb-4">Avionic</h4>
+              <h4 className="text-xl font-semibold mb-4">Avionics</h4>
               <div className="h-[30px]" />
               <div className="flex flex-wrap justify-center gap-6 w-full mx-auto md:max-w-[528px]">
-                {squads.avionic.map((m) => (
-                  <TeamMemberCard key={m.id} member={m} />
+                {squads.avionics.map((m) => (
+                  <TeamMemberCard
+                    key={m.id}
+                    member={{
+                      id: m.id,
+                      name: m.name,
+                      role: m.role ?? undefined,
+                      imageUrl: m.imageUrl ?? undefined,
+                      linkedinUrl: m.linkedinUrl ?? undefined,
+                    }}
+                  />
                 ))}
               </div>
             </div>
@@ -92,7 +145,16 @@ export default function TeamSection({
               <div className="h-[30px]" />
               <div className="flex flex-wrap justify-center gap-6 w-full mx-auto md:max-w-[528px]">
                 {squads.software.map((m) => (
-                  <TeamMemberCard key={m.id} member={m} />
+                  <TeamMemberCard
+                    key={m.id}
+                    member={{
+                      id: m.id,
+                      name: m.name,
+                      role: m.role ?? undefined,
+                      imageUrl: m.imageUrl ?? undefined,
+                      linkedinUrl: m.linkedinUrl ?? undefined,
+                    }}
+                  />
                 ))}
               </div>
             </div>
@@ -100,7 +162,7 @@ export default function TeamSection({
 
           <div className="h-[40px]" />
 
-          {/* 4) Join Us */}
+          {/* Join Us */}
           <div id="join" className="w-full">
             <div className="w-full flex justify-center">
               <div className="mx-auto max-w-3xl text-center space-y-6">
@@ -112,12 +174,11 @@ export default function TeamSection({
                 <div className="h-[20px]" />
                 <p className="text-gray-700">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Reiciendis deleniti dolorum unde.
                 </p>
                 <div className="h-[30px]" />
                 <div className="grid gap-8 sm:grid-cols-3 ">
                   <JoinCard title="Mechanical" href={forms.mechanical} />
-                  <JoinCard title="Avionic" href={forms.avionic} />
+                  <JoinCard title="Avionics" href={forms.avionics} />
                   <JoinCard title="Software" href={forms.software} />
                 </div>
               </div>

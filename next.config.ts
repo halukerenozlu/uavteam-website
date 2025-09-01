@@ -6,6 +6,24 @@ const nextConfig: NextConfig = {
     optimizeRouterScrolling: true,
   },
 
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "media.licdn.com", // LinkedIn avatarları
+      },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com", // GitHub avatarları
+      },
+      {
+        protocol: "https",
+        hostname: "pbs.twimg.com", // Twitter / X avatarları
+      },
+      // Gerekirse buraya başka domainler de ekleyebilirsin
+    ],
+  },
+
   async headers() {
     return [
       {

@@ -75,10 +75,12 @@ export default function AdminPanelLayout({
         user={me}
       />
 
-      <div className="pt-14 grid md:grid-cols-[260px_1fr] ">
+      <div className="pt-14 grid md:grid-cols-[260px_1fr]">
         {/* Desktop Sidebar */}
-        <aside className="hidden md:block sticky top-14 h-[calc(100vh-56px)] border-r bg-background ">
-          <Sidebar />
+        <aside className="hidden md:block border-r bg-background">
+          <div className="sticky top-14 h-[calc(100vh-56px)] overflow-y-auto">
+            <Sidebar />
+          </div>
         </aside>
 
         {/* İçerik */}

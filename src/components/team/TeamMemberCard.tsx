@@ -8,7 +8,7 @@ import { FaLinkedin } from "react-icons/fa";
 export type TeamMember = {
   id: string;
   name: string;
-  role?: string;
+  role?: string; // DB’den null gelebilirse üst seviyede undefined’a çevireceğiz
   imageUrl?: string | null;
   linkedinUrl?: string | null;
 };
@@ -29,19 +29,19 @@ function initials(name: string) {
 /**
  * İsim satırlarını hazırlar:
  * - En fazla 3 kelime
- * - Kelime başına max 13 karakter (uzunsa '…')
- * - İlk kelime 1. satır, kalan(lar) altta (soyisim altta görünür)
+ * - Kelime başına max 13 karakter (uzunsa kısalt)
+ * - İlk kelime 1. satır, kalan(lar) altta
  */
 function formatNameLines(fullName: string): string[] {
   const words = fullName
     .trim()
-    .split(/\s+/) // boşluk → yeni kelime
+    .split(/\s+/)
     .filter(Boolean)
-    .slice(0, 3) // max 3 kelime
-    .map((w) => (w.length > 13 ? w.slice(0, 14) : w)); // kelime başına 13 char
+    .slice(0, 3)
+    .map((w) => (w.length > 13 ? w.slice(0, 14) : w));
 
-  if (words.length <= 1) return words; // tek kelimeyse tek satır
-  return [words[0], ...words.slice(1)]; // ilk kelime üstte, diğerleri altta
+  if (words.length <= 1) return words;
+  return [words[0], ...words.slice(1)];
 }
 
 export default function TeamMemberCard({
