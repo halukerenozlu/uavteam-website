@@ -26,7 +26,7 @@ export default function Sidebar() {
             {l.label}
             {pathname === l.href && (
               <span
-                className="absolute left-0 bottom-0 h-1 bg-red-500 transition-all duration-300 ease-in-out"
+                className="absolute left-0 bottom-2 h-1 bg-red-500 transition-all duration-300 ease-in-out"
                 style={{ width: "calc(100% - 3.5rem)" }}
               />
             )}

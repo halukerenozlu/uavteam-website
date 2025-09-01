@@ -152,7 +152,7 @@ export default function VehiclesDashboard() {
                           variant="outline"
                           size="sm"
                           onClick={() => setEditing(v)}
-                          className="!p-2 !mr-3"
+                          className="!p-2 !mr-3 hover:bg-gray-300"
                         >
                           Düzenle
                         </Button>
@@ -163,7 +163,7 @@ export default function VehiclesDashboard() {
                             <Button
                               variant="destructive"
                               size="sm"
-                              className="!p-3"
+                              className="!p-3 hover:bg-red-500"
                             >
                               Sil
                             </Button>
@@ -207,7 +207,7 @@ export default function VehiclesDashboard() {
             <div className="  !p-2 h-fit sticky top-16 self-start">
               {editing ? (
                 <>
-                  <h2 className="text-lg font-semibold mb-3">Aracı Düzenle</h2>
+                  <h2 className="text-lg font-semibold !mb-4">Aracı Düzenle</h2>
                   <VehicleForm
                     key={`edit-${editing.id}`}
                     initial={editing}

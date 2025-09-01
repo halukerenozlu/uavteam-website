@@ -180,12 +180,12 @@ export default function TeamMemberForm({
                   setValues({ ...values, imageUrl: e.target.value })
                 }
               />
-              <div className="mt-2 flex gap-2 !pt-2">
+              <div className="mt-2 flex gap-2 !pt-2 ">
                 <Button
                   type="button"
                   variant="secondary"
                   onClick={() => setValues({ ...values, imageUrl: "" })}
-                  className="!p-2"
+                  className="!p-2 bg-red-600 text-white hover:bg-red-500"
                 >
                   Avatarı Kaldır
                 </Button>
@@ -196,7 +196,11 @@ export default function TeamMemberForm({
       </div>
 
       <div className="flex justify-end gap-2 !p-2">
-        <Button className="!p-2" type="submit" disabled={loading}>
+        <Button
+          className="!p-2 hover:bg-gray-800"
+          type="submit"
+          disabled={loading}
+        >
           {values.id ? "Güncelle" : "Ekle"}
         </Button>
       </div>

@@ -177,7 +177,7 @@ export default function VehicleForm({
           value={values.title || ""}
           onChange={(e) => setValues((v) => ({ ...v, title: e.target.value }))}
           placeholder="Araç adı"
-          className="!p-2"
+          className="!p-2 !mb-2 "
           required
         />
       </div>
@@ -231,7 +231,7 @@ export default function VehicleForm({
               className="!p-2"
             />
             <Button
-              className="!p-3"
+              className="!p-3 hover:bg-gray-700"
               type="button"
               onClick={importFromUrl}
               disabled={importing}
@@ -319,7 +319,7 @@ export default function VehicleForm({
       <Button
         type="submit"
         disabled={uploading || importing}
-        className="mt-2 bg-black !text-white hover:bg-gray-800 !px-5"
+        className="mt-2 bg-black !text-white hover:bg-gray-700 !px-5"
       >
         {submitText}
       </Button>

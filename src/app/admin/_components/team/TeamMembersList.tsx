@@ -160,7 +160,7 @@ export default function TeamMembersList({ items }: { items: Member[] }) {
 
                   <div className="flex gap-2 !p-2">
                     <Button
-                      className="!p-2"
+                      className="!p-2 hover:bg-gray-300"
                       variant="secondary"
                       onClick={() => startEdit(m)}
                     >
@@ -170,7 +170,7 @@ export default function TeamMembersList({ items }: { items: Member[] }) {
                       variant="destructive"
                       onClick={() => askDelete(m)}
                       disabled={isPending}
-                      className="!p-3"
+                      className="!p-3 hover:bg-red-500"
                     >
                       Sil
                     </Button>
@@ -198,7 +198,7 @@ export default function TeamMembersList({ items }: { items: Member[] }) {
       {/* AlertDialog: Sil onayı */}
       <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <AlertDialogContent>
-          <AlertDialogHeader>
+          <AlertDialogHeader className="!text-center">
             <AlertDialogTitle>Emin misiniz?</AlertDialogTitle>
             <AlertDialogDescription>
               {target ? (
@@ -214,7 +214,7 @@ export default function TeamMembersList({ items }: { items: Member[] }) {
           <AlertDialogFooter>
             {/* Siyah vazgeç butonu */}
             <AlertDialogCancel asChild>
-              <Button className="bg-black text-white hover:bg-gray-800 !p-3 !m-1">
+              <Button className="bg-black text-white hover:bg-gray-800 hover:text-white !p-3 !m-1">
                 Vazgeç
               </Button>
             </AlertDialogCancel>

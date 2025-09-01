@@ -196,7 +196,11 @@ export function ControlCenterCards() {
               value={newSponsorUrl}
               onChange={(e) => setNewSponsorUrl(e.target.value)}
             />
-            <Button className="!p-2" onClick={onAddSponsor} disabled={disabled}>
+            <Button
+              className="!p-2 hover:bg-gray-700"
+              onClick={onAddSponsor}
+              disabled={disabled}
+            >
               Ekle
             </Button>
           </div>
@@ -216,7 +220,7 @@ export function ControlCenterCards() {
                 <Button
                   variant="destructive"
                   size="sm"
-                  className="!p-3"
+                  className="!p-3 hover:bg-red-500"
                   onClick={() => onRemoveSponsor(s.id)}
                   disabled={disabled}
                 >
@@ -258,7 +262,11 @@ export function ControlCenterCards() {
             ))}
           </div>
           <div className="flex justify-center !p-5 !pb-3">
-            <Button className="!p-3" onClick={onSaveSocial} disabled={disabled}>
+            <Button
+              className="!p-3 hover:bg-gray-700"
+              onClick={onSaveSocial}
+              disabled={disabled}
+            >
               Kaydet
             </Button>
           </div>
@@ -307,7 +315,7 @@ export function ControlCenterCards() {
 
           <div className="flex items-center gap-3 justify-center !p-3">
             <Button
-              className="!p-2"
+              className="!p-2 hover:bg-gray-700"
               onClick={onSaveApplyForms}
               disabled={disabled}
             >
@@ -326,7 +334,7 @@ export function ControlCenterCards() {
           <Button
             variant="destructive"
             disabled={disabled}
-            className="col-span-full !m-auto !mt-12 !mb-6 !p-4 lg:col-start-2 lg:col-end-3 xl:col-start-2 xl:col-end-3"
+            className="col-span-full !m-auto !mt-12 !mb-6 !p-4 lg:col-start-2 lg:col-end-3 xl:col-start-2 xl:col-end-3 hover:bg-red-500"
           >
             Hesabımı Sil
           </Button>
@@ -344,7 +352,7 @@ export function ControlCenterCards() {
           <AlertDialogFooter>
             <AlertDialogCancel className="!p-2">Vazgeç</AlertDialogCancel>
             <AlertDialogAction
-              className="!p-2"
+              className="!p-2 !bg-red-600 !text-white"
               onClick={() =>
                 startTransition(async () => {
                   const res = await deleteMyAccount();
