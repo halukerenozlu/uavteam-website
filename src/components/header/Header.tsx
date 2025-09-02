@@ -1,7 +1,7 @@
 // src/components/header/Header.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { openAdminTab } from "@/lib/openAdminTab";
@@ -14,8 +14,15 @@ import {
 } from "react-icons/fa";
 import { FiChevronDown } from "react-icons/fi";
 
-// DB'den sosyal linkleri al
-import { getSocialLinks } from "@/app/admin/(panel)/control-center/actions";
+// shadcn/ui
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 
 // ---- Tip tanımı ----
 type RightLink = {
@@ -30,7 +37,7 @@ const leftLinks = [
   { label: "Team", href: "/team" },
   { label: "Vehicles", href: "/vehicles" },
   { label: "Join Us", href: "/team#join" },
-];
+] as const;
 
 const rightLinks: RightLink[] = [
   { label: "Contact", href: "/contact" },
@@ -57,26 +64,18 @@ const rightLinks: RightLink[] = [
 export default function Header() {
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [contactOpen, setContactOpen] = useState(false);
   const pathname = usePathname();
 
-  // DB'den gelen sosyal URL’ler
+  // DB'den gelen sosyal URL’ler (varsayılan: static rightLinks)
   const [socialUrls, setSocialUrls] = useState<{
     Instagram?: string;
     LinkedIn?: string;
     YouTube?: string;
-  }>({
+  }>(() => ({
     Instagram: rightLinks.find((r) => r.label === "Instagram")?.href,
     LinkedIn: rightLinks.find((r) => r.label === "LinkedIn")?.href,
     YouTube: rightLinks.find((r) => r.label === "YouTube")?.href,
-  });
-
-  // Sayfa değişince menüleri kapat
-  useEffect(() => {
-    setMenuOpen(false);
-    setContactOpen(false);
-  }, [pathname]);
+  }));
 
   // Scroll gizle/göster
   useEffect(() => {
@@ -90,18 +89,22 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  // Sosyal linkleri çek
+  // Sosyal linkleri API'den çek (server action KULLANMADAN)
   useEffect(() => {
     let mounted = true;
     (async () => {
       try {
-        const res = await getSocialLinks();
-        if (!mounted || !res.ok) return;
-        const map = Object.fromEntries(res.data.map((x) => [x.label, x.url]));
+        const resp = await fetch("/api/social-links", { cache: "no-store" });
+        if (!mounted || !resp.ok) return;
+        const data = (await resp.json()) as {
+          Instagram?: string;
+          LinkedIn?: string;
+          YouTube?: string;
+        };
         setSocialUrls((prev) => ({
-          Instagram: map.Instagram || prev.Instagram,
-          LinkedIn: map.LinkedIn || prev.LinkedIn,
-          YouTube: map.YouTube || prev.YouTube,
+          Instagram: data.Instagram || prev.Instagram,
+          LinkedIn: data.LinkedIn || prev.LinkedIn,
+          YouTube: data.YouTube || prev.YouTube,
         }));
       } catch (e) {
         console.error(e);
@@ -110,7 +113,15 @@ export default function Header() {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [pathname]);
+
+  // yardımcı: sosyal link override
+  const resolveHref = (label: RightLink["label"], fallback: string) => {
+    if (label === "Instagram") return socialUrls.Instagram ?? fallback;
+    if (label === "LinkedIn") return socialUrls.LinkedIn ?? fallback;
+    if (label === "YouTube") return socialUrls.YouTube ?? fallback;
+    return fallback;
+  };
 
   return (
     <header
@@ -120,7 +131,7 @@ export default function Header() {
     >
       <div className="mx-4 h-full px-2">
         <div className="grid grid-cols-3 items-center h-full">
-          {/* SOL */}
+          {/* SOL (Desktop nav) */}
           <div className="hidden min-[821px]:flex items-center gap-8 px-6 !p-2">
             {leftLinks.map((link) => (
               <Link
@@ -133,34 +144,36 @@ export default function Header() {
             ))}
           </div>
 
-          {/* Mobil Menu */}
+          {/* Mobil: Sol taraftaki sayfalar için DropdownMenu */}
           <div className="flex items-center min-[821px]:hidden !p-2">
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => {
-                  setMenuOpen((v) => !v);
-                  setContactOpen(false);
-                }}
-                className="px-3 py-1.5 rounded-md border border-white/30 inline-flex items-center gap-1 hover:bg-white/10 transition-colors !p-2"
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="px-3 py-1.5 h-auto rounded-md border border-white/30 bg-transparent text-white hover:bg-white/10 !p-2"
+                >
+                  Menu <FiChevronDown className="ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="start"
+                sideOffset={8}
+                className="w-44 bg-black text-white border border-white/20"
               >
-                Menu <FiChevronDown />
-              </button>
-              {menuOpen && (
-                <div className="absolute left-[3px] mt-2 w-40 rounded-md border bg-black shadow-lg !p-2 z-50 origin-top-left">
-                  {leftLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className="block px-3 py-2 rounded hover:bg-white/10 transition-colors"
-                      onClick={() => setMenuOpen(false)}
-                    >
+                <DropdownMenuSeparator className="bg-white/10" />
+                {leftLinks.map((link) => (
+                  <DropdownMenuItem
+                    key={link.href}
+                    asChild
+                    className="focus:bg-white/10 focus:text-white !p-2"
+                  >
+                    <Link href={link.href} className="w-full">
                       {link.label}
                     </Link>
-                  ))}
-                </div>
-              )}
-            </div>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
           {/* ORTA (Logo) */}
@@ -185,7 +198,7 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* SAĞ */}
+          {/* SAĞ (Desktop sosyal + admin) */}
           <div className="hidden min-[821px]:flex items-center justify-end gap-4 px-6 !p-2">
             <Link
               href="/admin"
@@ -198,17 +211,7 @@ export default function Header() {
             </Link>
 
             {rightLinks.map((link) => {
-              const hrefOverride =
-                link.label === "Instagram"
-                  ? socialUrls.Instagram
-                  : link.label === "LinkedIn"
-                  ? socialUrls.LinkedIn
-                  : link.label === "YouTube"
-                  ? socialUrls.YouTube
-                  : undefined;
-
-              const href = hrefOverride ?? link.href;
-
+              const href = resolveHref(link.label, link.href);
               return link.external ? (
                 <a
                   key={link.label}
@@ -236,59 +239,58 @@ export default function Header() {
             })}
           </div>
 
-          {/* Mobil sağ (Contact + Admin) */}
+          {/* Mobil SAĞ: Contact dropdown + Admin */}
           <div className="flex items-center justify-end gap-2 min-[821px]:hidden !p-2">
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => {
-                  setContactOpen((v) => !v);
-                  setMenuOpen(false);
-                }}
-                className="px-3 py-1.5 rounded-md border border-white/30 inline-flex items-center gap-1 hover:bg-white/10 transition-colors !p-2"
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="px-3 py-1.5 h-auto rounded-md border border-white/30 bg-transparent text-white hover:bg-white/10 !p-2"
+                >
+                  Contact <FiChevronDown className="ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                sideOffset={8}
+                className="w-56 bg-black text-white border border-white/20 !p-2"
               >
-                Contact <FiChevronDown />
-              </button>
-              {contactOpen && (
-                <div className="absolute right-[3px] mt-2 w-48 rounded-md border bg-black shadow-lg !p-2 z-50 origin-top-right">
-                  {rightLinks.map((link) => {
-                    const hrefOverride =
-                      link.label === "Instagram"
-                        ? socialUrls.Instagram
-                        : link.label === "LinkedIn"
-                        ? socialUrls.LinkedIn
-                        : link.label === "YouTube"
-                        ? socialUrls.YouTube
-                        : undefined;
-
-                    const href = hrefOverride ?? link.href;
-
-                    return link.external ? (
+                <DropdownMenuSeparator className="bg-white/10" />
+                {rightLinks.map((link) => {
+                  const href = resolveHref(link.label, link.href);
+                  // dış link ise <a>, değilse <Link>
+                  return link.external ? (
+                    <DropdownMenuItem
+                      key={link.label}
+                      asChild
+                      className="focus:bg-white/10 focus:text-white !p-2"
+                    >
                       <a
-                        key={link.label}
                         href={href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-3 py-2 rounded hover:bg-white/10 transition-colors"
-                        onClick={() => setContactOpen(false)}
+                        className="flex items-center gap-2"
                       >
                         {link.icon ?? null}
                         <span>{link.label}</span>
                       </a>
-                    ) : (
-                      <Link
-                        key={link.label}
-                        href={href}
-                        className="block px-3 py-2 rounded hover:bg-white/10 transition-colors"
-                        onClick={() => setContactOpen(false)}
-                      >
-                        {link.label}
+                    </DropdownMenuItem>
+                  ) : (
+                    <DropdownMenuItem
+                      key={link.label}
+                      asChild
+                      className="focus:bg-white/10 focus:text-white"
+                    >
+                      <Link href={href} className="flex items-center gap-2">
+                        {link.icon ?? null}
+                        <span>{link.label}</span>
                       </Link>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
+                    </DropdownMenuItem>
+                  );
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             <Link
               href="/admin"
               target="_blank"

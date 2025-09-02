@@ -2,6 +2,15 @@
 
 import Image from "next/image";
 
+function StatBox({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="rounded-lg border p-4 text-center shadow-sm !pt-2 !pb-2">
+      <div className="text-2xl font-bold">{value}</div>
+      <div className="text-xs text-gray-600">{label}</div>
+    </div>
+  );
+}
+
 export default function AboutSection() {
   return (
     <section id="about" className="scroll-mt-24 bg-white text-black py-16">
@@ -25,10 +34,10 @@ export default function AboutSection() {
 
             {/* Sağ: İçerik */}
             <div className="space-y-6">
-              <div className="text-center">
-                <h2 className="text-4xl font-bold">About</h2>
-                <div className="h-[10px]" />
-                <div className="mt-3 w-140 h-1 bg-red-500 mx-auto" />
+              <div className="text-center justify-center">
+                <h2 className="text-2xl md:text-4xl font-bold">About</h2>
+                <div className="h-[15px]"></div>
+                <div className="w-32 h-1 bg-red-500 mb-6 !mx-auto"></div>
                 <div className="h-[40px]" />
               </div>
 
@@ -39,8 +48,9 @@ export default function AboutSection() {
                 ölçeklenebilir ve modüler İHA sistemleri geliştiriyoruz.
               </p>
               <div className="h-[40px]" />
+
               {/* 3’lü değer kartları */}
-              <div className="grid sm:grid-cols-3 justify-center gap-4 pt-2 px-6">
+              <div className="grid sm:grid-cols-3 justify-center gap-4 pt-3 px-6">
                 <div className="rounded-lg border p-4 shadow-sm hover:shadow-md transition">
                   <div className="text-sm font-semibold text-red-600 text-center">
                     Misyon
@@ -66,12 +76,14 @@ export default function AboutSection() {
                   </div>
                 </div>
               </div>
+
               <div className="h-[30px]" />
+
               {/* İstatistik şeridi */}
-              <div className="grid grid-cols-3 gap-4 pt-4">
-                <StatBox value="3" label="Vehicles" />
+              <div className="grid grid-cols-3 gap-4">
+                <StatBox value="3+" label="Vehicles" />
                 <StatBox value="5+" label="Competitions" />
-                <StatBox value="20+" label="Members" />
+                <StatBox value="15+" label="Members" />
               </div>
             </div>
           </div>
@@ -80,14 +92,5 @@ export default function AboutSection() {
 
       <div className="h-[40px]" />
     </section>
-  );
-}
-
-function StatBox({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="rounded-lg border p-4 text-center shadow-sm">
-      <div className="text-2xl font-bold">{value}</div>
-      <div className="text-xs text-gray-600">{label}</div>
-    </div>
   );
 }

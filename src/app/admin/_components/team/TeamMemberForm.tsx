@@ -156,7 +156,9 @@ export default function TeamMemberForm({
         </div>
 
         <div className="md:col-span-2">
-          <Label className=" !ml-28">Avatar URL - Sadece LinkedIn</Label>
+          <Label className=" !ml-28">
+            Avatar URL - Sadece LinkedIn, Github ve X
+          </Label>
           <div className="flex items-center gap-4">
             <div className="relative h-24 w-24 rounded-full overflow-hidden border bg-muted shrink-0">
               {values.imageUrl ? (
