@@ -72,3 +72,42 @@ enum Squad {
   avionics
   software
 }
+
+enum LinkType {
+  WEB
+  INSTAGRAM
+  YOUTUBE
+  X
+  LINKEDIN
+  NEWS
+}
+
+model HomeCard {
+  id          String         @id @default(cuid())
+  title       String         @db.VarChar(120)
+  content     String         @db.VarChar(500)
+  imageUrl    String
+  order       Int            @default(0)
+  isActive    Boolean        @default(true)
+  links       HomeCardLink[]
+
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([isActive, order])
+}
+
+model HomeCardLink {
+  id        String   @id @default(cuid())
+  cardId    String
+  type      LinkType
+  url       String
+
+  card      HomeCard @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  // Aynı kartta aynı tür bir kez
+  @@unique([cardId, type])
+  @@index([type])
+}
