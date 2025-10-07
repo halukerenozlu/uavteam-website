@@ -39,7 +39,7 @@ export default async function Footer() {
 
       {/* Orta yazı */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <span className="font-bold">© 2025 Kuasar UAV Team</span>
+        <span className="font-bold">2025 UAV Team</span>
       </div>
 
       {/* Sağ menü */}

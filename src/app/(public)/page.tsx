@@ -12,7 +12,7 @@ export default function HomePage() {
       <Hero
         imageSrc="/nokta.png"
         videoSrc="/Huawei P10.mp4"
-        title="KUASAR UAV TEAM"
+        title="UAV TEAM"
         subtitle="Become a part of the most innovative projects and be part of a passionate team"
       />
       <main className="bg-white text-black !px-6 !sm:px-0">

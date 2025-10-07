@@ -242,20 +242,26 @@ export default function NewsDashboardPage() {
                 value={form.title}
                 onChange={(e) => onChangeField("title", e.target.value)}
                 className="!p-1"
+                required
                 placeholder="Kısa başlık"
               />
             </div>
 
-            <div className="grid gap-3 !p-2">
-              <Label>İçerik (max 500)</Label>
+            <div className="grid gap-3 !p-3 !pb-0.5">
+              <Label>İçerik</Label>
               <Textarea
                 value={form.content}
                 onChange={(e) => onChangeField("content", e.target.value)}
                 rows={4}
                 maxLength={500}
+                required
                 className="!p-1"
                 placeholder="Kısa açıklama"
               />
+            </div>
+
+            <div className="text-xs text-muted-foreground text-right !p-2">
+              {form.content?.length ?? 0}/{500}
             </div>
 
             <div className="grid md:grid-cols-3 gap-4 items-end !p-2">
@@ -300,12 +306,12 @@ export default function NewsDashboardPage() {
 
             {/* Preview */}
             {form.imageUrl && (
-              <div className="relative h-40 w-full overflow-hidden rounded-xl border">
+              <div className="relative h-40 w-full overflow-hidden rounded-xl ">
                 <Image
                   src={form.imageUrl || DEFAULT_CARD_IMAGE}
                   alt="Önizleme"
                   fill
-                  className="object-cover"
+                  className="object-cover !p-2"
                   unoptimized
                   onError={() => onChangeField("imageUrl", "")}
                 />
@@ -397,12 +403,7 @@ export default function NewsDashboardPage() {
                       </div>
                       <div className="md:col-span-3 flex gap-2">
                         <Button type="button" variant="ghost" asChild>
-                          <a
-                            href={l.url || "#"}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Önizleme"
-                          >
+                          <a rel="noopener noreferrer" aria-label="Önizleme">
                             <Icon className="h-5 w-5" />
                           </a>
                         </Button>
@@ -430,7 +431,11 @@ export default function NewsDashboardPage() {
                 {editingId ? "Kaydet" : "Ekle"}
               </Button>
               {editingId && (
-                <Button variant="outline" onClick={resetForm}>
+                <Button
+                  className="!p-2 bg-gray-200 hover:bg-gray-400"
+                  variant="outline"
+                  onClick={resetForm}
+                >
                   Vazgeç
                 </Button>
               )}

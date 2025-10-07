@@ -59,7 +59,7 @@ function CardView({
           alt={title}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover"
+          className="object-cover rounded-2xl"
           unoptimized
           priority={false}
         />
@@ -85,7 +85,7 @@ function CardView({
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-black underline-offset-4 hover:underline"
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="h-6 w-6" />
                   <span className="sr-only">{l.type}</span>
                 </Link>
               );

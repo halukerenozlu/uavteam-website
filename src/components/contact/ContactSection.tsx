@@ -32,11 +32,11 @@ export default function ContactSection() {
                 <div className="w-24 h-1 bg-red-500 mb-6 mx-auto"></div>
 
                 <Link
-                  href="mailto:info@kuasar-uav.com"
+                  href="mailto:info@uav.com"
                   className="inline-flex items-center gap-2 text-lg hover:text-club-red transition-colors"
                 >
                   <Mail size={20} />
-                  info@kuasar-uav.com
+                  info@uav.com
                 </Link>
               </div>
               <div className="h-[20px]" />
@@ -47,7 +47,7 @@ export default function ContactSection() {
                   href="tel:+902744434343"
                   className="text-lg hover:text-club-red transition-colors"
                 >
-                  +90 (274) 443 43 43
+                  +90 (111) 111 11 11
                 </Link>
               </div>
               <div className="h-[20px]" />

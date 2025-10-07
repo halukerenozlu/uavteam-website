@@ -11,7 +11,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kuasar UAV Team",
+  title: "UAV Team",
   description: "İnsansız hava araçları kulübü tanıtım sitesi",
 };
 
